@@ -67,9 +67,9 @@ resource "aws_sfn_state_machine" "step_function" {
   definition = <<DEFINITION
 {
   "Comment": "Import Step Function",
-  "StartAt": "Lambda - ME - Create Temp Tables",
+  "StartAt": "Lambda - ME - Create temp tables",
   "States": {
-    "Lambda - ME - Create Temp Tables": {
+    "Lambda - ME - Create temp tables": {
       "Type": "Task",
       "Resource": "arn:aws:states:::lambda:invoke",
       "OutputPath": "$.Payload",
@@ -93,14 +93,14 @@ resource "aws_sfn_state_machine" "step_function" {
           "BackoffRate": 2
         }
       ],
-      "Next": "Wait - ME - Create tem tables"
+      "Next": "Wait - ME - Create temp tables"
     },
-    "Wait - ME - Create tem tables": {
+    "Wait - ME - Create temp tables": {
       "Type": "Wait",
       "Seconds": 2,
-      "Next": "Lambda - Chceck - ME - Create tem tables"
+      "Next": "Lambda - Chceck - ME - Create temp tables"
     },
-    "Lambda - Chceck - ME - Create tem tables": {
+    "Lambda - Chceck - ME - Create temp tables": {
       "Type": "Task",
       "Resource": "arn:aws:states:::lambda:invoke",
       "Parameters": {
@@ -123,9 +123,9 @@ resource "aws_sfn_state_machine" "step_function" {
           "BackoffRate": 2
         }
       ],
-      "Next": "Choice - ME - Create tem tables"
+      "Next": "Choice - ME - Create temp tables"
     },
-    "Choice - ME - Create tem tables": {
+    "Choice - ME - Create temp tables": {
       "Type": "Choice",
       "Choices": [
         {
@@ -136,7 +136,7 @@ resource "aws_sfn_state_machine" "step_function" {
         {
           "Variable": "$.Payload.job_status",
           "StringMatches": "Failed",
-          "Next": "Lambda - ME - Create tem tables"
+          "Next": "Lambda - ME - Create temp tables"
         }
       ]
     },
