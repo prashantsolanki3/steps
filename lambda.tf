@@ -1,4 +1,20 @@
+resource "null_resource" "pip_install" {
+  provisioner "local-exec" {
+    command = "/opt/homebrew/bin/pip3 install -t ${path.module} -r requirements.txt"
+    working_dir = "${path.module}/lambda"
+  }
+}
+
+resource "null_resource" "lambda_zip" {
+  depends_on = [ null_resource.pip_install ]
+  provisioner "local-exec" {
+    command = "zip -r ../payload2.zip ."
+    working_dir = "${path.module}/lambda"
+  }
+}
+
 resource "aws_lambda_function" "lambda_function" {
+  depends_on = [ null_resource.lambda_zip ]
   filename      = "payload.zip"  # Path to your Lambda function code
   function_name = "lambda_function"
   role          = aws_iam_role.lambda_role.arn  # Update with your Lambda role ARN
