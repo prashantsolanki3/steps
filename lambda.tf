@@ -8,7 +8,7 @@ resource "null_resource" "pip_install" {
 resource "null_resource" "lambda_zip" {
   depends_on = [ null_resource.pip_install ]
   provisioner "local-exec" {
-    command = "zip -r ../payload2.zip ."
+    command = "zip -r ../payload.zip ."
     working_dir = "${path.module}/lambda"
   }
 }
