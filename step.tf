@@ -49,12 +49,19 @@ resource "aws_sfn_state_machine" "step_function" {
 
   definition = <<DEFINITION
 {
-  "Comment": "A Hello World example of the Amazon States Language using Pass states",
-  "StartAt": "HelloWorld",
+  "Comment": "An example of the Amazon States Language using Pass states",
+  "StartAt": "Lambda1",
   "States": {
-    "HelloWorld": {
+    "Lambda1": {
       "Type": "Task",
       "Resource": "${aws_lambda_function.lambda_function.arn}",
+      "ResultPath": "$.output1",
+      "Next": "Lambda2"
+    },
+    "Lambda2": {
+      "Type": "Task",
+      "Resource": "${aws_lambda_function.lambda_function.arn}",
+      "InputPath": "$.output1",
       "End": true
     }
   }
